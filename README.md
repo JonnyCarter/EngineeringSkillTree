@@ -1,11 +1,11 @@
 # Software Engineer Skill Tree MVP
 
-A lightweight Node.js + Express prototype for an interactive game-like skill tree for software engineers.
+A static HTML, CSS, and JavaScript skill tree for software engineers. It can be hosted on GitHub Pages with no application server or database.
 
 ## Features
 
-- Anonymous cookie-based user identity
-- File-backed persistence for users and progress
+- Device-local progress stored in the browser with `localStorage`
+- JSON export and import for moving progress between browsers or devices
 - Skill graph with prerequisite-aware guidance and flexible completion states
 - Responsive Cytoscape.js skill graph with Dagre layout
 - Smooth mouse, trackpad, touch, and keyboard navigation
@@ -15,20 +15,29 @@ A lightweight Node.js + Express prototype for an interactive game-like skill tre
 - Dual-track self-assessed and evidence-backed skill progress
 - Confidence, derived XP, capability milestones, and emergent career levels
 - Skill-tree and career badges with live progress and automatic unlocking
-- REST endpoints for tree data and progress
+- No backend, accounts, cookies, or external runtime dependencies
 
-## Local setup
+## Run locally
 
-1. Install dependencies:
-   npm install
-2. Start the app:
-   npm start
-3. Open in the browser:
-   http://localhost:3000
+Serve the `public` directory with any static web server. The existing development command remains available:
 
-Stop a server started with `npm start`:
+1. Run `npm install` once.
+2. Run `npm start`.
+3. Open `http://localhost:3000`.
 
-    npm stop
+Stop it with `npm stop`.
+
+Opening `index.html` directly is not supported because browsers normally block local `fetch()` requests for the JSON dataset.
+
+## Progress and transfers
+
+Progress and evidence links are saved only in the current browser under the `engineering-skill-tree-progress-v1` local-storage key. There is no user account and no server copy, so clearing browser site data clears progress.
+
+Use **Export** to download a versioned JSON backup. On another device, open the site and use **Import** to replace that browser's progress with the backup. Export files can include evidence URLs and should be handled as personal data.
+
+## GitHub Pages
+
+The deploy workflow in `.github/workflows/deploy-pages.yml` publishes the contents of `public` whenever `main` is updated. In the repository's **Settings > Pages**, choose **GitHub Actions** as the source. Relative asset paths make the app work both at a user site and under a repository path.
 
 ## GitHub skill suggestions
 
@@ -45,39 +54,32 @@ The report contains suggested skill IDs, confidence, reasons, and supporting lin
 
 ## Project structure
 
-- `server/server.js` — Express app and REST endpoints
-- `server/storage.js` — user creation, cookie handling, dataset loading, file-backed storage
 - `public/index.html` — app shell
 - `public/css/styles.css` — dark game-like UI styling
 - `public/js/app.js` — client rendering and API integration
-- `data/skill-tree.json` — working copy of the supplied skill tree dataset
-- `data/users.json` — anonymous user store
-- `data/progress.json` — per-user progress state
+- `public/js/progress-store.js` — local progress, XP, badges, and import/export
+- `public/data/skill-tree.json` — deployed skill tree dataset
 - `software_engineer_skill_tree_v0_7.json` — active source dataset provided by the product brief
 
 ## Architecture decisions
 
-### Anonymous users
-
-On first visit, the server creates a UUID and stores it in an HttpOnly cookie named `skilltree_user_id`. The cookie uses `SameSite=Lax`, and `Secure` is enabled in production. The raw user ID is never exposed to the browser beyond the cookie.
-
 ### Persistence
 
-The persistence layer is intentionally simple and file-backed so it can be replaced later with SQLite or PostgreSQL without reworking the application logic. Storage is centralized behind the `server/storage.js` module.
+Progress is intentionally device-local. The browser calculates progression and writes the normalized skill records to `localStorage`. Export/import is the portability and backup mechanism for this MVP.
 
 ### Prerequisites and unlocks
 
-The server is the source of truth for skill availability. A skill is considered:
+The browser derives skill availability from the dataset and locally stored progress. A skill is considered:
 
 - Locked: some prerequisites are incomplete
 - Available: prerequisites are complete and it can be explored
 - Completed: the user has marked it complete
 
-Locked skills can still be marked complete. Prerequisites guide the recommended path, while allowing experienced users to jump ahead and leave earlier skills visible as gaps to revisit. The server remains the source of truth for progress state.
+Locked skills can still be marked complete. Prerequisites guide the recommended path, while allowing experienced users to jump ahead and leave earlier skills visible as gaps to revisit.
 
 ### Graph rendering
 
-Cytoscape.js owns graph rendering, selection, panning, and zooming. The Cytoscape Dagre extension computes a left-to-right directed layout from skill prerequisites, reducing edge crossings without maintaining custom node-positioning code. Both browser bundles are installed through npm and served locally by Express under `/vendor`.
+Cytoscape.js owns graph rendering, selection, panning, and zooming. The Cytoscape Dagre extension computes a left-to-right directed layout from skill prerequisites. Both browser bundles are committed under `public/vendor` so the published site has no CDN dependency.
 
 ### Badge model
 
@@ -87,18 +89,9 @@ Specialisation badges track every skill in their corresponding engineering tree.
 
 Each completed skill is stored as either `self_assessed` or `evidenced`, with a confidence level from Guided to Leadership. Evidence is an optional web link such as a GitHub project or Confluence page. XP is derived from skill tier, confidence, and evidence status, so it cannot be farmed by repeatedly toggling completion. Capability milestones are calculated from their required skills, and career level progresses from Foundation through Junior, Engineer, Senior, and Staff based on milestone depth and evidenced work. Legacy checkbox completions are read as Independent self-assessments.
 
-## API summary
-
-- `GET /api/me` — current anonymous user and progress snapshot
-- `GET /api/tree` — full skill graph plus badge metadata
-- `GET /api/progress` — user progress summary
-- `POST /api/skills/:id/complete` — mark any valid skill complete
-- `DELETE /api/skills/:id/complete` — mark a skill as not completed
-- `GET /api/badges` — badge status for the current user
-
 ## Important notes
 
 - The dataset remains the source of truth for skills, relationships, areas, and learning resources.
 - The app intentionally keeps the implementation simple and readable for junior engineers.
-- The design is extensible enough to swap in a database-backed store or richer badge rules later.
+- `public/data/skill-tree.json` is the deployed dataset and must be updated when the source tree changes.
 # EngineeringSkillTree

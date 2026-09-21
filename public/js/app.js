@@ -42,20 +42,6 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
-async function fetchJson(url, options = {}) {
-  const response = await fetch(url, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options
-  });
-
-  if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    throw new Error(data.error || 'Request failed');
-  }
-
-  return response.json();
-}
-
 function renderProgress(progress) {
   if (!progress) {
     elements.progressSummary.innerHTML = '<p class="empty-detail">No progress yet.</p>';
@@ -684,10 +670,7 @@ async function saveSkillProgress(skill, payload = {}) {
 
   state.completionPending = true;
   try {
-    await fetchJson(`/api/skills/${skill.id}/complete`, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
+    window.SkillTreeProgress.save(state.tree, skill.id, payload);
     await loadApp();
   } catch (error) {
     elements.detailPanel.innerHTML = `<p class="empty-detail">${escapeHtml(error.message)}</p>`;
@@ -703,7 +686,7 @@ async function clearSkillProgress(skill) {
 
   state.completionPending = true;
   try {
-    await fetchJson(`/api/skills/${skill.id}/complete`, { method: 'DELETE' });
+    window.SkillTreeProgress.clear(state.tree, skill.id);
     await loadApp();
   } catch (error) {
     elements.detailPanel.innerHTML = `<p class="empty-detail">${escapeHtml(error.message)}</p>`;
@@ -729,14 +712,18 @@ function showSkillDetails(skillId) {
 
 async function loadApp() {
   try {
-    const treeResponse = await fetchJson('/api/tree');
-    const badgeResponse = await fetchJson('/api/badges');
+    const dataset = state.rawTree || await fetch('./data/skill-tree.json').then((response) => {
+      if (!response.ok) throw new Error('Could not load the skill tree dataset');
+      return response.json();
+    });
+    state.rawTree = dataset;
+    const treeResponse = window.SkillTreeProgress.build(dataset);
 
     state.tree = treeResponse;
     state.user = treeResponse.progress || {};
 
     renderProgress(treeResponse.progress || {});
-    renderBadges(badgeResponse.badges || []);
+    renderBadges(treeResponse.badges || []);
     renderGraphFilters(treeResponse);
     renderTree(treeResponse);
 
@@ -758,12 +745,8 @@ async function loadApp() {
 
 async function resetProgress() {
   try {
-    const nodes = state.tree?.nodes || [];
-    for (const node of nodes) {
-      if (node.state === 'completed') {
-        await fetchJson(`/api/skills/${node.id}/complete`, { method: 'DELETE' });
-      }
-    }
+    if (!window.confirm('Clear all progress stored in this browser?')) return;
+    window.SkillTreeProgress.reset();
     await loadApp();
   } catch (error) {
     elements.detailPanel.innerHTML = `<p class="empty-detail">${escapeHtml(error.message)}</p>`;
@@ -772,19 +755,15 @@ async function resetProgress() {
 
 async function exportProgress() {
   try {
-    const response = await fetch('/api/progress/export');
-    if (!response.ok) {
-      throw new Error('Could not export progress');
-    }
-    const blob = await response.blob();
-    const disposition = response.headers.get('Content-Disposition') || '';
-    const filename = disposition.match(/filename="([^"]+)"/)?.[1] || 'skilltree-progress.json';
+    const payload = window.SkillTreeProgress.export(state.rawTree);
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const filename = `skilltree-progress-${payload.exportedAt.slice(0, 10)}.json`;
     const downloadUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = downloadUrl;
     link.download = filename;
     link.click();
-    URL.revokeObjectURL(downloadUrl);
+    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 0);
   } catch (error) {
     elements.detailPanel.innerHTML = `<p class="empty-detail">${escapeHtml(error.message)}</p>`;
   }
@@ -800,10 +779,7 @@ async function importProgress(file) {
     if (!window.confirm('Replace progress on this device with the selected export?')) {
       return;
     }
-    await fetchJson('/api/progress/import', {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
+    window.SkillTreeProgress.import(state.rawTree, payload);
     state.selectedSkillId = null;
     await loadApp();
   } catch (error) {
