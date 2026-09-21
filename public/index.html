@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Software Engineer Skill Tree</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Skill tree</p>
+          <h1>Engineering Skill Tree</h1>
+        </div>
+        <div class="topbar-actions">
+          <button id="export-progress" class="secondary-button" type="button">Export</button>
+          <button id="import-progress" class="secondary-button" type="button">Import</button>
+          <input id="import-progress-file" class="visually-hidden" type="file" accept="application/json,.json" />
+          <button id="reset-progress" class="secondary-button" type="button">Reset progress</button>
+        </div>
+      </header>
+
+      <div class="layout">
+        <aside id="detail-panel" class="focus-panel" aria-live="polite" aria-label="Selected training details"></aside>
+
+        <main class="tree-panel">
+          <div class="tree-toolbar" aria-label="Graph controls">
+            <div class="graph-filters">
+              <select id="tree-filter" aria-label="Filter by skill tree">
+                <option value="all">All trees</option>
+              </select>
+              <select id="level-filter" aria-label="Filter by level">
+                <option value="all">All levels</option>
+              </select>
+            </div>
+            <button id="view-mode" class="view-mode-button" type="button" aria-pressed="false">Full map</button>
+            <div class="zoom-controls">
+              <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
+              <button id="zoom-reset" type="button" aria-label="Fit skill tree to view">Fit</button>
+              <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+          <div id="tree-viewport" class="tree-viewport" aria-label="Skill tree graph area">
+            <div id="skill-tree" role="application" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Space" aria-label="Interactive software engineering skill tree"></div>
+          </div>
+
+        </main>
+      </div>
+
+      <footer class="page-footer" aria-label="Progress and badges">
+        <details class="panel progress-panel">
+          <summary>Progress</summary>
+          <div id="progress-summary" class="progress-summary"></div>
+        </details>
+
+        <details class="panel badges-panel">
+          <summary>Badges</summary>
+          <ul id="badge-list" class="badge-list" aria-live="polite"></ul>
+        </details>
+      </footer>
+    </div>
+
+    <script src="/vendor/cytoscape/cytoscape.min.js"></script>
+    <script src="/vendor/cytoscape-dagre/cytoscape-dagre.min.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

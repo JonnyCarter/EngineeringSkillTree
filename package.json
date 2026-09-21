@@ -1,0 +1,19 @@
+{
+  "name": "skilltree-mvp",
+  "version": "1.0.0",
+  "description": "Interactive software engineer skill tree MVP",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "stop": "node scripts/stop-server.js",
+    "dev": "node --watch server/server.js",
+    "infer:github": "node scripts/infer-github-skills.js",
+    "test": "node --test"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cytoscape": "^3.34.3",
+    "cytoscape-dagre": "^4.0.1",
+    "express": "^4.21.2"
+  }
+}

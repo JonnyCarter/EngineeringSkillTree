@@ -1,0 +1,76 @@
+{
+  "users": {
+    "e8deb167-94a6-414c-a738-46d5e73de0e8": {
+      "id": "e8deb167-94a6-414c-a738-46d5e73de0e8",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:17:33.705Z",
+      "updatedAt": "2026-09-21T12:17:33.705Z"
+    },
+    "e6143823-d2c6-4d86-b07d-966e97c62571": {
+      "id": "e6143823-d2c6-4d86-b07d-966e97c62571",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:17:37.629Z",
+      "updatedAt": "2026-09-21T12:17:37.629Z"
+    },
+    "7aaef910-7280-4aaa-be7f-fb6befaf17e9": {
+      "id": "7aaef910-7280-4aaa-be7f-fb6befaf17e9",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:19:24.424Z",
+      "updatedAt": "2026-09-21T12:19:24.424Z"
+    },
+    "13c571ab-4bc1-4c1a-b847-8eed19acc791": {
+      "id": "13c571ab-4bc1-4c1a-b847-8eed19acc791",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:19:44.245Z",
+      "updatedAt": "2026-09-21T12:19:44.245Z"
+    },
+    "e92171c1-76c0-4dcb-8c80-11f791efd5da": {
+      "id": "e92171c1-76c0-4dcb-8c80-11f791efd5da",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:20:08.715Z",
+      "updatedAt": "2026-09-21T12:20:08.715Z"
+    },
+    "74e234db-b483-4ce4-981c-bcf80fd04661": {
+      "id": "74e234db-b483-4ce4-981c-bcf80fd04661",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:21:05.737Z",
+      "updatedAt": "2026-09-21T12:21:05.737Z"
+    },
+    "506d017b-145e-4a5f-b17c-10268bc39a26": {
+      "id": "506d017b-145e-4a5f-b17c-10268bc39a26",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:23:22.280Z",
+      "updatedAt": "2026-09-21T12:23:22.280Z"
+    },
+    "3bdee5cb-cc9a-4aa3-b3a3-97ea8fb3e4c0": {
+      "id": "3bdee5cb-cc9a-4aa3-b3a3-97ea8fb3e4c0",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:23:41.419Z",
+      "updatedAt": "2026-09-21T12:23:41.419Z"
+    },
+    "29b15845-8b38-45cc-9292-bd97dfd4749c": {
+      "id": "29b15845-8b38-45cc-9292-bd97dfd4749c",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:26:14.162Z",
+      "updatedAt": "2026-09-21T12:26:14.162Z"
+    },
+    "a2976d18-85dc-447c-81b8-1be9e2394c90": {
+      "id": "a2976d18-85dc-447c-81b8-1be9e2394c90",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:29:42.873Z",
+      "updatedAt": "2026-09-21T12:29:42.873Z"
+    },
+    "aaf77a9c-e284-4340-9c5a-caf2b19bac91": {
+      "id": "aaf77a9c-e284-4340-9c5a-caf2b19bac91",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T12:40:49.746Z",
+      "updatedAt": "2026-09-21T12:40:49.746Z"
+    },
+    "fb4b21b4-2d22-45d4-9db2-0e0ce1527f32": {
+      "id": "fb4b21b4-2d22-45d4-9db2-0e0ce1527f32",
+      "type": "anonymous",
+      "createdAt": "2026-09-21T13:32:16.121Z",
+      "updatedAt": "2026-09-21T13:32:16.121Z"
+    }
+  }
+}
