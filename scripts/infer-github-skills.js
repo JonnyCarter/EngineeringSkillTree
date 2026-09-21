@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
+
 const rootDir = path.join(__dirname, '..');
 const tree = require(path.join(rootDir, 'data', 'skill-tree.json'));
 
