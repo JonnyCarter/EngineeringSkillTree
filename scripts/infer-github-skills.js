@@ -4,7 +4,7 @@ const { spawnSync } = require('node:child_process');
 
 
 const rootDir = path.join(__dirname, '..');
-const tree = require(path.join(rootDir, 'data', 'skill-tree.json'));
+const tree = require(path.join(rootDir, 'public', 'data', 'skill-tree.json'));
 
 const keywordRules = [
   { skillId: 'test_write_unit_tests', pattern: /\b(test|tests|testing|spec|coverage)\b/i, reason: 'Authored work references tests or coverage.' },

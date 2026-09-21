@@ -150,7 +150,7 @@
     });
   }
 
-  window.SkillTreeProgress = {
+  const api = {
     load,
     save(tree, skillId, input) {
       const records = load(tree);
@@ -182,4 +182,7 @@
       persist(records);
     }
   };
+
+  globalThis.SkillTreeProgress = api;
+  if (typeof module !== 'undefined') module.exports = api;
 }());

@@ -21,11 +21,10 @@ A static HTML, CSS, and JavaScript skill tree for software engineers. It can be 
 
 Serve the `public` directory with any static web server. The existing development command remains available:
 
-1. Run `npm install` once.
-2. Run `npm start`.
-3. Open `http://localhost:3000`.
+1. Run `npm start` (no install step is required).
+2. Open `http://localhost:3000`.
 
-Stop it with `npm stop`.
+Stop it with `Ctrl+C`.
 
 Opening `index.html` directly is not supported because browsers normally block local `fetch()` requests for the JSON dataset.
 
@@ -56,10 +55,10 @@ The report contains suggested skill IDs, confidence, reasons, and supporting lin
 
 - `public/index.html` — app shell
 - `public/css/styles.css` — dark game-like UI styling
-- `public/js/app.js` — client rendering and API integration
+- `public/js/app.js` — graph rendering and UI integration
 - `public/js/progress-store.js` — local progress, XP, badges, and import/export
 - `public/data/skill-tree.json` — deployed skill tree dataset
-- `software_engineer_skill_tree_v0_7.json` — active source dataset provided by the product brief
+- `scripts/serve-static.js` — dependency-free local development server
 
 ## Architecture decisions
 
@@ -94,4 +93,3 @@ Each completed skill is stored as either `self_assessed` or `evidenced`, with a 
 - The dataset remains the source of truth for skills, relationships, areas, and learning resources.
 - The app intentionally keeps the implementation simple and readable for junior engineers.
 - `public/data/skill-tree.json` is the deployed dataset and must be updated when the source tree changes.
-# EngineeringSkillTree

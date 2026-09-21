@@ -4,10 +4,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const rootDir = path.join(__dirname, '..');
-const datasetPath = path.join(rootDir, 'data', 'skill-tree.json');
+const datasetPath = path.join(rootDir, 'public', 'data', 'skill-tree.json');
 
 test('the skill tree dataset exists and is valid JSON', () => {
-  assert.ok(fs.existsSync(datasetPath), 'data/skill-tree.json should exist');
+  assert.ok(fs.existsSync(datasetPath), 'public/data/skill-tree.json should exist');
 
   const raw = fs.readFileSync(datasetPath, 'utf8');
   const dataset = JSON.parse(raw);
