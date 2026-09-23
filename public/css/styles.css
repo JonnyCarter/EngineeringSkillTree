@@ -600,12 +600,6 @@ h2 {
   color: #624814;
 }
 
-.state-chip.evidenced {
-  background: #ccebf5;
-  border-color: #236b9a;
-  color: #174968;
-}
-
 .state-chip.available {
   background: #9be1b5;
   border-color: #28794f;
@@ -670,7 +664,6 @@ h2 {
   font-weight: 400;
 }
 
-.assessment-form input,
 .assessment-form select {
   width: 100%;
   min-width: 0;
@@ -687,10 +680,6 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-.saved-evidence {
-  font-size: 0.82rem;
 }
 
 .detail-section {

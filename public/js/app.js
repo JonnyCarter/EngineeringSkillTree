@@ -65,7 +65,6 @@ function renderProgress(progress) {
     <div class="metric">
       <span>${escapeHtml(area.name)}</span>
       <strong>${area.completed} / ${area.total}</strong>
-      <small>${area.evidenced || 0} evidenced</small>
       <div class="progress-bar" aria-label="${escapeHtml(area.name)} progress">
         <span class="progress-fill" style="width: ${Math.min(area.percent, 100)}%"></span>
       </div>
@@ -86,7 +85,7 @@ function renderProgress(progress) {
     <div class="metric">
       <span>Overall progress</span>
       <strong>${progress.completedCount} / ${progress.totalSkills}</strong>
-      <small>${progress.selfAssessedCount || 0} self-assessed · ${progress.evidencedCount || 0} evidenced</small>
+      <small>${progress.completedCount || 0} self-assessed</small>
       <div class="progress-bar" aria-label="Overall progress">
         <span class="progress-fill" style="width: ${percent}%"></span>
       </div>
@@ -293,16 +292,6 @@ function graphStyles() {
         'background-color': '#ffe08a',
         'background-opacity': 1,
         'border-color': '#a56d18'
-      }
-    },
-    {
-      selector: 'node.evidenced',
-      style: {
-        'border-color': '#236b9a',
-        'border-width': 5,
-        'shadow-blur': 12,
-        'shadow-color': '#4cb7d7',
-        'shadow-opacity': 0.4
       }
     },
     {
@@ -569,11 +558,8 @@ function renderDetailPanel(skill) {
   }).join('');
 
   const completed = skill.state === 'completed';
-  const evidence = skill.evidence?.[0] || {};
   const confidence = skill.confidence || 2;
-  const progressStatus = skill.progressStatus === 'evidenced'
-    ? 'evidenced'
-    : completed ? 'self assessed' : skill.state || 'locked';
+  const progressStatus = completed ? 'self assessed' : skill.state || 'locked';
 
   elements.detailPanel.innerHTML = `
     <div class="skill-detail-header">
@@ -612,15 +598,6 @@ function renderDetailPanel(skill) {
           <option value="4" ${confidence === 4 ? 'selected' : ''}>Leadership</option>
         </select>
       </label>
-      <label>
-        <span>Evidence link <small>optional</small></span>
-        <input name="evidenceUrl" type="url" placeholder="GitHub or Confluence URL" value="${escapeHtml(evidence.url || '')}" />
-      </label>
-      <label>
-        <span>Evidence label <small>optional</small></span>
-        <input name="evidenceLabel" maxlength="120" placeholder="What this demonstrates" value="${escapeHtml(evidence.label || '')}" />
-      </label>
-      ${evidence.url ? `<a class="resource-link saved-evidence" href="${escapeHtml(evidence.url)}" target="_blank" rel="noreferrer noopener">Open saved evidence</a>` : ''}
       <div class="assessment-actions">
         <button type="submit" class="primary-button">Save progress</button>
         ${completed ? '<button type="button" class="secondary-button" data-clear-progress>Clear</button>' : ''}
@@ -653,11 +630,7 @@ function renderDetailPanel(skill) {
     assessmentForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const formData = new FormData(assessmentForm);
-      saveSkillProgress(skill, {
-        confidence: Number(formData.get('confidence')),
-        evidenceUrl: formData.get('evidenceUrl'),
-        evidenceLabel: formData.get('evidenceLabel')
-      });
+      saveSkillProgress(skill, { confidence: Number(formData.get('confidence')) });
     });
     assessmentForm.querySelector('[data-clear-progress]')?.addEventListener('click', () => clearSkillProgress(skill));
   }

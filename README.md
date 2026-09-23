@@ -12,7 +12,7 @@ A static HTML, CSS, and JavaScript skill tree for software engineers. It can be 
 - Progressive focus mode that reveals the next skill layer as the learner advances
 - Filters for engineering tree and skill level
 - Skill detail panel with completion toggle and learning resources
-- Dual-track self-assessed and evidence-backed skill progress
+- Confidence-based self-assessed skill progress
 - Confidence, derived XP, capability milestones, and emergent career levels
 - Skill-tree and career badges with live progress and automatic unlocking
 - No backend, accounts, cookies, or external runtime dependencies
@@ -30,9 +30,9 @@ Opening `index.html` directly is not supported because browsers normally block l
 
 ## Progress and transfers
 
-Progress and evidence links are saved only in the current browser under the `engineering-skill-tree-progress-v1` local-storage key. There is no user account and no server copy, so clearing browser site data clears progress.
+Progress is saved only in the current browser under the `engineering-skill-tree-progress-v1` local-storage key. There is no user account and no server copy, so clearing browser site data clears progress.
 
-Use **Export** to download a versioned JSON backup. On another device, open the site and use **Import** to replace that browser's progress with the backup. Export files can include evidence URLs and should be handled as personal data.
+Use **Export** to download a versioned JSON backup. On another device, open the site and use **Import** to replace that browser's progress with the backup.
 
 ## GitHub Pages
 
@@ -86,7 +86,7 @@ Specialisation badges track every skill in their corresponding engineering tree.
 
 ### Progression model
 
-Each completed skill is stored as either `self_assessed` or `evidenced`, with a confidence level from Guided to Leadership. Evidence is an optional web link such as a GitHub project or Confluence page. XP is derived from skill tier, confidence, and evidence status, so it cannot be farmed by repeatedly toggling completion. Capability milestones are calculated from their required skills, and career level progresses from Foundation through Junior, Engineer, Senior, and Staff based on milestone depth and evidenced work. Legacy checkbox completions are read as Independent self-assessments.
+Each completed skill is stored as a self-assessment with a confidence level from Guided to Leadership. XP is derived from skill tier and confidence, so it cannot be farmed by repeatedly toggling completion. Capability milestones are calculated from their required skills, and career level progresses from Foundation through Junior, Engineer, Senior, and Staff based on milestone depth. Legacy checkbox completions and evidence-backed exports are read as self-assessments.
 
 ## Important notes
 

@@ -29,27 +29,29 @@ test('saving progress updates the graph snapshot', () => {
   assert.equal(result.progress.completedCount, 1);
 });
 
-test('evidence and progress survive an export/import round trip', () => {
+test('progress survives an export/import round trip', () => {
   const skill = tree.nodes[0];
-  store.save(tree, skill.id, {
-    confidence: 4,
-    evidenceUrl: 'https://github.com/example/project',
-    evidenceLabel: 'Example project'
-  });
+  store.save(tree, skill.id, { confidence: 4 });
   const exported = store.export(tree);
   store.reset();
   store.import(tree, exported);
   const result = store.build(tree);
 
-  assert.equal(result.progress.evidencedCount, 1);
-  assert.equal(result.progress.skillProgress[skill.id].evidence[0].label, 'Example project');
+  assert.equal(result.progress.completedCount, 1);
+  assert.equal(result.progress.skillProgress[skill.id].confidence, 4);
 });
 
-test('unsafe evidence URLs are rejected', () => {
-  assert.throws(
-    () => store.save(tree, tree.nodes[0].id, { evidenceUrl: 'javascript:alert(1)' }),
-    /valid http or https URL/
-  );
+test('legacy evidence is reduced to a self-assessment on import', () => {
+  const skill = tree.nodes[0];
+  store.import(tree, {
+    format: 'engineering-skill-tree-progress',
+    version: 1,
+    progress: { skillProgress: { [skill.id]: { confidence: 3, evidence: [{ url: 'https://example.com' }] } } }
+  });
+
+  const record = store.build(tree).progress.skillProgress[skill.id];
+  assert.equal(record.status, 'self_assessed');
+  assert.equal('evidence' in record, false);
 });
 
 test('completing every skill earns every badge', () => {
